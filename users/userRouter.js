@@ -1,4 +1,5 @@
 const express = require('express');
+const Users = require('./userDb');
 
 const router = express.Router();
 
@@ -11,15 +12,44 @@ router.post('/:id/posts', (req, res) => {
 });
 
 router.get('/', (req, res) => {
-  // do your magic!
+  Users.get()
+    .then( users => {
+      res.status(200).json(users);
+    })
+    .catch( error => {
+      console.log(error);
+      res.status(500).json({
+        error: "Error retrieving the users."
+      });
+    });
 });
 
 router.get('/:id', (req, res) => {
-  // do your magic!
+  const id = req.params.id;
+  Users.getById(id)
+    .then( user => {
+      res.status(200).json(user)
+    })
+    .catch( error => {
+      console.log(error);
+      res.status(500).json({
+        error: 'Error retrieving the user.'
+      });
+    });
 });
 
 router.get('/:id/posts', (req, res) => {
-  // do your magic!
+  const id = req.params.id;
+  Users.getUserPosts(id)
+    .then( posts => {
+      res.status(200).json(posts);
+    })
+    .catch( error => {
+      console.log(error);
+      res.status(500).json({
+        error: 'Error retrieving the user\'s posts.'
+      });
+    });
 });
 
 router.delete('/:id', (req, res) => {
