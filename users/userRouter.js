@@ -1,14 +1,39 @@
 const express = require('express');
 const Users = require('./userDb');
+const Posts = require('../posts/postDb');
 
 const router = express.Router();
 
 router.post('/', (req, res) => {
-  // do your magic!
+  Users.insert(req.body)
+    .then( user => {
+      res.status(201).json(user)
+    })
+    .catch( error => {
+      console.log(error => {
+        res.status(500).json({
+          error: "Error saving new user."
+        });
+      });
+    });
 });
 
 router.post('/:id/posts', (req, res) => {
-  // do your magic!
+  const id = req.params.id;
+  const newPost = {
+    user_id: id,
+    text: req.body.text
+  };
+  Posts.insert(newPost)
+    .then( post => {
+      res.status(201).json(post)
+    })
+    .catch(error => {
+      console.log(error);
+      res.status(500).json({
+        error: 'Error saving new post.'
+      })
+    })
 });
 
 router.get('/', (req, res) => {
