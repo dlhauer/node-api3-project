@@ -145,9 +145,7 @@ function validateUser(req, res, next) {
 }
 
 function validatePost(req, res, next) {
-  // do your magic!
   if (Object.entries(req.body).length > 0) {
-    // console.log('req.body: ', req.body)
     if (req.body.text){
       next();
     } else {
